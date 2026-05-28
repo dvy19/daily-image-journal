@@ -1,6 +1,8 @@
 package com.example.dailyjournalpic
 
+import android.net.Uri
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -28,11 +30,15 @@ fun AppNavigation() {
         ) { backStackEntry ->
 
             val imagePath =
-                backStackEntry.arguments?.getString("imagePath")
+                Uri.decode(
+                    backStackEntry.arguments
+                        ?.getString("imagePath")
+                )
 
             ReviewScreen(
                 navController,
-                imagePath!!
+                imagePath!!,
+                viewModel = viewModel()
             )
         }
     }

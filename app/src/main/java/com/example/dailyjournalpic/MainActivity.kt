@@ -11,37 +11,35 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.room.Room
 import com.example.dailyjournalpic.ui.theme.DailyJournalPicTheme
-
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
+
+        // Create Room Database
+        val database = Room.databaseBuilder(
+            applicationContext,
+            JournalDatabase::class.java,
+            "journal_db"
+        ).build()
+
+        // Create Repository
+        val repository = JournalRepository(
+            database.journalDao()
+        )
+
         setContent {
+
             DailyJournalPicTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+
+                AppNavigation(
+
+                )
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    DailyJournalPicTheme {
-        Greeting("Android")
     }
 }

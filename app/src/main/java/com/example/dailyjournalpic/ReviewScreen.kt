@@ -10,6 +10,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,11 +29,12 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
+import androidx.compose.material3.OutlinedTextField
 @Composable
 fun ReviewScreen(
     navController: NavController,
-    imagePath: String
+    imagePath: String,
+    viewModel: ReviewViewModel
 ) {
 
     var note by remember {
@@ -51,14 +53,16 @@ fun ReviewScreen(
             Locale.getDefault()
         ).format(Date())
 
-    Column {
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
 
         Image(
             painter = rememberAsyncImagePainter(
-
                 File(imagePath)
             ),
-            contentDescription = null
+            contentDescription = null,
+            modifier = Modifier.fillMaxWidth()
         )
 
         Text("Date: $currentDate")
@@ -89,16 +93,10 @@ fun ReviewScreen(
                     "dashboard",
                     false
                 )
-
             }
         ) {
 
             Text("Save")
         }
     }
-}
-
-@Composable
-fun OutlinedTextField(value: String, onValueChange: () -> Unit, label: () -> Unit) {
-    TODO("Not yet implemented")
 }

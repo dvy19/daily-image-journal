@@ -4,9 +4,29 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+
+import com.example.dailyjournalpic.JournalDatabase
+import com.example.dailyjournalpic.JournalEntity
+import com.example.dailyjournalpic.JournalRepository
+import kotlinx.coroutines.launch
+
 class ReviewViewModel(
-    private val repository: JournalRepository
-) : ViewModel() {
+    application: Application
+) : AndroidViewModel(application) {
+
+    private val dao =
+        JournalDatabase
+            .getDatabase(application)
+            .journalDao()
+
+    private val repository =
+        JournalRepository(dao)
+
+    val journals =
+        repository.getAllJournals()
 
     fun saveJournal(
         imagePath: String,
