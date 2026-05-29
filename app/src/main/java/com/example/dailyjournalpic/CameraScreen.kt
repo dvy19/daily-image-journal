@@ -7,7 +7,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
@@ -25,6 +24,14 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.camera.core.AspectRatio
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 @Composable
 fun CameraScreen(
@@ -72,8 +79,20 @@ fun CameraScreen(
             val cameraProvider =
                 cameraProviderFuture.get()
 
+            /*
             val preview =
                 Preview.Builder().build()
+
+             */
+
+            val preview =
+                Preview.Builder()
+                    .setTargetAspectRatio(
+                        AspectRatio.RATIO_4_3
+                    )
+                    .build()
+
+
             preview.setSurfaceProvider(
                 previewView.surfaceProvider
             )
@@ -98,14 +117,29 @@ fun CameraScreen(
     }
 
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
     ) {
 
         AndroidView(
             factory = {
-                previewView
+                previewView.apply {
+
+                    scaleType =
+                        PreviewView.ScaleType.FIT_CENTER
+                }
             },
-            modifier = Modifier.fillMaxSize()
+
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 24.dp
+                )
+                .align(Alignment.Center)
+
         )
 
         Button(
@@ -148,9 +182,9 @@ fun CameraScreen(
                 )
             },
 
-            modifier = Modifier.align(
-                Alignment.BottomCenter
-            )
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 32.dp)
         ) {
 
             Text("Capture")
