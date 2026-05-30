@@ -48,4 +48,10 @@ class ReviewViewModel(
             )
         }
     }
+
+    fun update(journal: JournalEntity) = viewModelScope.launch { repository.update(journal) }
+    fun delete(journal: JournalEntity) = viewModelScope.launch { repository.delete(journal) }
+    suspend fun getById(id: Int): JournalEntity = repository.getById(id)
+
+
 }

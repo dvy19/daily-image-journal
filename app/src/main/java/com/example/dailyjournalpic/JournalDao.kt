@@ -1,8 +1,10 @@
 package com.example.dailyjournalpic
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -11,8 +13,17 @@ interface JournalDao {
     @Insert
     suspend fun insertJournal(journal: JournalEntity)
 
+    @Update
+    suspend fun updateJournal(journal: JournalEntity)
+
+    @Delete
+    suspend fun deleteJournal(journal: JournalEntity)
+
     @Query("SELECT * FROM journal_table ORDER BY id DESC")
     fun getAllJournals(): Flow<List<JournalEntity>>
+
+    @Query("SELECT * FROM journal_table WHERE id = :id")
+    suspend fun getJournalById(id: Int): JournalEntity
 }
 
 /*
